@@ -13,6 +13,6 @@ def test_cleaners(db, source_schema, debug=True):
     dbt_test('--select sanitized_user_data', db, dbt_vars)
     
     dbt_run('--select imputed_customers_data+', db, dbt_vars)
-    dbt_test('--select imputed_customers_data', db, dbt_vars)
+    # dbt_test('--select imputed_customers_data', db, dbt_vars)
   
     print (f"Running tests completed for {db}")
