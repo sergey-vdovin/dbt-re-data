@@ -1,13 +1,16 @@
 name: "re_data"
-version: "0.6.3"
+version: "0.8.0"
 config-version: 2
 
-require-dbt-version: [">=0.20.0", "<1.1.0"]
+require-dbt-version: [">=1.0.0", "<1.2.0"]
 
 profile: "re_data_postgres"
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: ["target", "dbt_modules", "dbt_packages"]
+
+on-run-end:
+  - "{% if var('re_data:save_test_history') %} {{ re_data.save_test_history(results) }} {% endif %}"
 
 vars:
   re_data:max_columns_in_query: 10
@@ -17,7 +20,11 @@ vars:
 
   re_data:alerting_z_score: 3
 
-  re_data:monitored: [] # overwritten by user config
+  re_data:save_test_history: false
+
+  re_data:anomaly_detector:
+    name: modified_z_score
+    threshold: 3
 
   re_data:metrics_base:
     table:
